@@ -38,7 +38,9 @@ export const Container = styled.div`
       box-shadow: none;
       cursor: grabbing;
 
-      p, img, header {
+      p,
+      img,
+      header {
         opacity: 0;
       }
     `}
