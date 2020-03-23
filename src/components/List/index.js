@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Container } from './styles';
 
 import { MdAdd } from 'react-icons/md';
 
+import { useDrop } from 'react-dnd';
+
 import Card from '../Card';
 
+import BoardContext from '../Board/context';
+
 export default function List({ data, index: listIndex }) {
+  const { move } = useContext(BoardContext);
+
+  const [, dropRef] = useDrop({
+    accept: 'CARD',
+    hover(item, monitor) {
+      if (listIndex === item.listIndex) {
+        return;
+      }
+
+      const size = data.cards.length;
+
+      move(item.listIndex, listIndex, item.index, size);
+
+      item.index = size;
+      item.listIndex = listIndex;
+    }
+  });
+
   return (
-    <Container done={data.done}>
+    <Container ref={dropRef} done={data.done}>
       <header>
         <h2>{data.title}</h2>
         {data.creatable && (
